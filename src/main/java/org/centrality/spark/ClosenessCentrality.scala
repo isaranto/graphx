@@ -3,7 +3,6 @@ package org.centrality.spark
 import org.apache.spark.graphx.{EdgeRDD, GraphLoader, VertexRDD,lib}
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.log4j.{Level, Logger}
-import scala.collection.mutable.ListBuffer
 /**
   * Created by lias on 5/4/16.
   */
@@ -14,8 +13,8 @@ object ClosenessCentrality {
     val sc = new SparkContext(conf)
     val rootLogger = Logger.getRootLogger()
     rootLogger.setLevel(Level.ERROR)
-    //val graph = GraphLoader.edgeListFile(sc, "twitter_edges.txt")
-    val graph = GraphLoader.edgeListFile(sc, "followers.txt")
+    val graph = GraphLoader.edgeListFile(sc, "twitter_edges.txt")
+    //val graph = GraphLoader.edgeListFile(sc, "followers.txt")
     //create a new RDD with just VertexId to be used for shortest paths
     // algorithm
     val vertexSeq = graph.vertices.map(v => v._1).collect().toSeq
@@ -29,9 +28,9 @@ object ClosenessCentrality {
     for ((vertexId, closeness) <- sorted.take(10)){
       println(s"Vertex with id ${vertexId} has a closeness degree of ${closeness}")
     }
-    spgraph.vertices.collect.foreach(v => println(v._1 , v._2))
-    closeness.collect.foreach(v => println(v))
-    
+    //spgraph.vertices.collect.foreach(v => println(v._1 , v._2))
+    //closeness.collect.foreach(v => println(v))
+
   }
 
 }
