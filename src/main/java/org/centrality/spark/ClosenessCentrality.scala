@@ -4,7 +4,7 @@ import org.apache.spark.graphx.{EdgeRDD, GraphLoader, VertexRDD,lib}
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.log4j.{Level, Logger}
 /**
-  * Created by lias on 5/4/16.
+  * Created by Ilias Sarantopoulos on 5/4/16.
   */
 object ClosenessCentrality {
   def main(args: Array[String]) {

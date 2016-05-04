@@ -5,7 +5,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.graphx._
 
 /**
-  * Created by lias on 4/27/16.
+  * Created by Ilias Sarantopoulos on 4/27/16.
   */
 object DegreeCentrality {
 
