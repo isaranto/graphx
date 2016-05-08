@@ -13,7 +13,7 @@ object EigenVectorCentrality {
     val sc = new SparkContext(conf)
     val rootLogger = Logger.getRootLogger()
     rootLogger.setLevel(Level.ERROR)
-    val graph = GraphLoader.edgeListFile(sc, "twitter_edges.txt")
-    //val graph = GraphLoader.edgeListFile(sc, "followers.txt")
+    //val graph = GraphLoader.edgeListFile(sc, "twitter_edges.txt")
+    val graph = GraphLoader.edgeListFile(sc, "followers.txt")
 
 }
