@@ -5,6 +5,8 @@ import org.apache.log4j.{Level, Logger}
 
 /**
   * Created by Ilias Sarantopoulos on 5/6/16.
+  * Running GraphX PageRank example from documentation
+  * on my twitter network
   */
 object PageRank {
   def main(args: Array[String]) {
@@ -14,9 +16,8 @@ object PageRank {
     val rootLogger = Logger.getRootLogger()
     rootLogger.setLevel(Level.ERROR)
     // Load the edges as a graph
-    //val graph = GraphLoader.edgeListFile(sc, "followers.txt")
     val graph = GraphLoader.edgeListFile(sc, "my_twitter_edges.txt")
-    // Run PageRank
+    // Run PageRank on my twitter network
     val ranks = graph.pageRank(0.0001).vertices
     // Join the ranks with the usernames
     val users = sc.textFile("my_twitter_users.txt").map { line =>  val
@@ -32,7 +33,6 @@ object PageRank {
     for ((vertexId, degree) <- sorted.take(10)){
       println(s"User: ${vertexId} has a pagerank degree of ${degree}")
     }
-    //println(sorted.collect().mkString("\n"))
 
  }
 

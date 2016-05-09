@@ -1,4 +1,3 @@
-
 import scala.io.Source
 import scala.collection.mutable.HashMap
 import org.apache.spark.{SparkConf, SparkContext}
