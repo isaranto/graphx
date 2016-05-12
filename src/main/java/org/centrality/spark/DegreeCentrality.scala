@@ -5,6 +5,8 @@ import org.apache.spark.graphx._
 
 /**
   * Created by Ilias Sarantopoulos on 4/27/16.
+  * Degree centrality is calculated for each vertex as follows:
+  * d(u) = u.degree / Total_number_of_vertices_in_graph -1
   */
 object DegreeCentrality {
 
@@ -32,10 +34,18 @@ object DegreeCentrality {
     println(s"The graph has a total of $degrees.count() vertices")
     //sort vertices on descending degree value
     val normalized = degrees.map((s => (s._1, s._2*normalizationFactor)))
-    val sorted = normalized.sortBy(- _._2)
+    val users = sc.textFile("users.txt").map { line =>  val
+    fields = line
+      .split(",")
+      (fields(0).toLong, fields(2))
+    }
+    val ranksByUsername = users.join(normalized).map {
+      case (id, (username, score)) => (username, score)
+    }
+    val sorted = ranksByUsername.sortBy(- _._2)
     //print top 10 vertices
     for ((vertexId, degree) <- sorted.take(10)){
-      println(s"Vertex with id ${vertexId} has a degree of ${degree}")
+      println(s"User with name: ${vertexId} has a degree centrality of ${degree}")
     }
     /*
     alternative way to calculate degree centrality
