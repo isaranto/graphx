@@ -30,7 +30,7 @@ object DegreeCentrality {
     //var degrees: HashMap[Long, Int] = HashMap()
     //normalization factor is 1/node_count-1
     val normalizationFactor:Float = 1f/(graph.vertices.count()-1)
-    val degrees: VertexRDD[Int] = graph.degrees
+    val degrees: VertexRDD[Int] = graph.degrees.persist()
     println(s"The graph has a total of $degrees.count() vertices")
     //sort vertices on descending degree value
     val normalized = degrees.map((s => (s._1, s._2*normalizationFactor)))

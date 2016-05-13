@@ -5,6 +5,8 @@ import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.log4j.{Level, Logger}
 /**
   * Created by Ilias Sarantopoulos on 5/4/16.
+  * Closeness centrality is calculated for each vertex as follows:
+  * d(u) = 1 / Sum_of_shortest_paths_from_u_to_all_other_vertices
   */
 object ClosenessCentrality {
   def main(args: Array[String]) {
