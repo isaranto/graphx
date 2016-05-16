@@ -10,13 +10,6 @@ import org.apache.spark.graphx._
   */
 object DegreeCentrality {
 
-  def calcDegree() : Map[Long,Int] = {
-      var degrees:Map[Long,Int] = Map()
-      //degrees += (15 -> 1)
-      return degrees
-
-   }
-
   def main(args: Array[String]) {
     System.setProperty("hadoop.home.dir", "/home/lias/IdeaProjects/centrality/")
     val conf = new SparkConf().setAppName("Simple Application").setMaster("local")
