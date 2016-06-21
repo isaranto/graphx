@@ -16,4 +16,5 @@ object LouvainModularity {
     rootLogger.setLevel(Level.ERROR)
     val graph = GraphLoader.edgeListFile(sc, "followers-new.txt")
 
+  }
 }
