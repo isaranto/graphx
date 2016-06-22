@@ -9,6 +9,7 @@ import org.apache.spark.{SparkConf, SparkContext}
   */
 object EigenVectorCentrality {
   def main(args: Array[String]) {
+    val time0 = System.currentTimeMillis()
     System.setProperty("hadoop.home.dir", "/home/lias/IdeaProjects/centrality/")
     val conf = new SparkConf().setAppName("Simple Application").setMaster("local")
     val sc = new SparkContext(conf)
@@ -25,7 +26,7 @@ object EigenVectorCentrality {
     var flag = true
     var oldConv = 15d
     var newConv = 0d
-    while (convergence > 0.015 && iter!=0){
+    while (convergence > 0.00015 && iter!=0){
     //for ( x <- 1 to iter){
         //previousValue.vertices.sortBy(_._1).collect.foreach(v => println(v._1 , v._2))
         //previousValue.vertices.collect.foreach(v => println(v._2))
@@ -46,18 +47,20 @@ object EigenVectorCentrality {
         )
         rankGraph = rankGraph.outerJoinVertices(newVertices){ (vid, oldvalue, newvalue) => newvalue.getOrElse(0) }
         iter = iter - 1
-      println(s"iter = ${iter}")
-      convergence = math.abs(newConv - oldConv)
-      oldConv=newConv
-      newConv=rankGraph.vertices.map{case (vId,e)=>e}.sum()/nodeNumber
-      println(newConv)
+      //println(s"iter = ${iter}")
+      //convergence = math.abs(newConv - oldConv)
+      //oldConv=newConv
+      //newConv=rankGraph.vertices.map{case (vId,e)=>e}.sum()/nodeNumber
+      //println(newConv)
       //convergence = math.abs(rankGraph.vertices.map(x=>x._2).collect.sum.toDouble - oldValue.vertices.map(x=>x._2)  .collect.sum.toDouble)
 
-      println(s"convergence = ${convergence}")
+      //println(s"convergence = ${convergence}")
       if (iter==0){
-        //after the last iteration print the top 10 eigenvector centrality values and the attributes of the edges
+        val time1 = System.currentTimeMillis()
+        println(s"Executed in ${(time1-time0)/1000.0} seconds")
+        //after the last iteration print the top 10 eigenvector centrality values and the attributes of some edges
         rankGraph.vertices.sortBy(-_._2).take(10).foreach(v => println(v))
-        rankGraph.edges.collect.foreach{println(_)}
+        rankGraph.edges.take(10).foreach{println(_)}
       }
     }
   }

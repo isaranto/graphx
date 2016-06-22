@@ -10,6 +10,7 @@ import org.apache.log4j.{Level, Logger}
   */
 object ClosenessCentrality {
   def main(args: Array[String]) {
+    val time0 = System.currentTimeMillis()
     System.setProperty("hadoop.home.dir", "/home/lias/IdeaProjects/centrality/")
     val conf = new SparkConf().setAppName("Simple Application").setMaster("local")
     val sc = new SparkContext(conf)
@@ -26,6 +27,9 @@ object ClosenessCentrality {
       .values.sum))
     //sort vertices on descending degree value
     val sorted = closeness.sortBy(- _._2)
+    //print time elapsed
+    val time1 = System.currentTimeMillis()
+    println(s"Executed in ${(time1-time0)/1000.0} seconds")
     //print top 10 vertices
     for ((vertexId, closeness) <- sorted.take(10)){
       println(s"Vertex with id ${vertexId} has a closeness degree of ${closeness}")
