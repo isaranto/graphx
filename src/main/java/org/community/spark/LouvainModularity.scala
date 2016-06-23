@@ -18,7 +18,7 @@ object LouvainModularity {
     val graph = GraphLoader.edgeListFile(sc, "followers-new.txt")
 
 
-    //print time elapsed 
+    //print time elapsed
     val time1 = System.currentTimeMillis()
     println(s"Executed in ${(time1-time0)/1000.0} seconds")
   }

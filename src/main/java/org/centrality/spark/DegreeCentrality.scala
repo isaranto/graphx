@@ -16,8 +16,8 @@ object DegreeCentrality {
     val conf = new SparkConf().setAppName("Simple Application").setMaster("local")
     val sc = new SparkContext(conf)
     //val distFile = sc.textFile(edgesFile())
-    //val graph = GraphLoader.edgeListFile(sc, "twitter_edges.txt")
-    val graph = GraphLoader.edgeListFile(sc, "followers.txt")
+    val graph = GraphLoader.edgeListFile(sc, "twitter_edges.txt")
+    //val graph = GraphLoader.edgeListFile(sc, "followers.txt")
     /*var degrees:Map[Long,Int] = Map()
     for (triplet <- graph.triplets.collect) {
         println(s"${triplet.srcId} follows ${triplet.dstId}")}*/

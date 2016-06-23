@@ -1,7 +1,7 @@
 package org.centrality.spark
 
 import org.apache.log4j.{Level, Logger}
-import org.apache.spark.graphx.{GraphLoader, VertexRDD}
+import org.apache.spark.graphx.{Graph,GraphLoader, VertexRDD}
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
@@ -19,14 +19,16 @@ object EigenVectorCentrality {
     val nodeNumber = graph.numVertices
     val previousValue = graph.mapVertices((vId, eigenvalue) => 1.0 / nodeNumber)
     val zeroValue = graph.mapVertices((vId, eigenvalue) => 0.0)
-    var iter = 4
+    var iter = 1000
     var oldValue = previousValue
+    var absolute = oldValue
     var newVertices = previousValue.vertices
-    var convergence = 100.0
+    var convergence = 10d
     var flag = true
-    var oldConv = 15d
-    var newConv = 0d
-    while (convergence > 0.00015 && iter!=0){
+    //var oldGraph: Graph[Double, Double] = Graph.apply(sc.emptyRDD, sc.emptyRDD)
+    var oldGraph = graph.outerJoinVertices(zeroValue.vertices) { (vid, deg, eigenValue) => eigenValue.getOrElse(0.0)
+    }.mapEdges( e => e.attr.toDouble)
+    do{
     //for ( x <- 1 to iter){
         //previousValue.vertices.sortBy(_._1).collect.foreach(v => println(v._1 , v._2))
         //previousValue.vertices.collect.foreach(v => println(v._2))
@@ -47,21 +49,19 @@ object EigenVectorCentrality {
         )
         rankGraph = rankGraph.outerJoinVertices(newVertices){ (vid, oldvalue, newvalue) => newvalue.getOrElse(0) }
         iter = iter - 1
-      //println(s"iter = ${iter}")
-      //convergence = math.abs(newConv - oldConv)
-      //oldConv=newConv
-      //newConv=rankGraph.vertices.map{case (vId,e)=>e}.sum()/nodeNumber
-      //println(newConv)
-      //convergence = math.abs(rankGraph.vertices.map(x=>x._2).collect.sum.toDouble - oldValue.vertices.map(x=>x._2)  .collect.sum.toDouble)
-
-      //println(s"convergence = ${convergence}")
-      if (iter==0){
-        val time1 = System.currentTimeMillis()
-        println(s"Executed in ${(time1-time0)/1000.0} seconds")
-        //after the last iteration print the top 10 eigenvector centrality values and the attributes of some edges
-        rankGraph.vertices.sortBy(-_._2).take(10).foreach(v => println(v))
-        rankGraph.edges.take(10).foreach{println(_)}
+        //calculate convergence as the sum of absolute differences of old and new eigenvalue of each vertex
+        convergence = oldGraph
+            .outerJoinVertices(rankGraph.vertices){(vid, oldvalue, newvalue)=> math.abs(newvalue.get-oldvalue)}
+          .vertices.map(x => x._2).sum()
+        oldGraph = rankGraph
+        println(s"Convergence is at ${convergence}")
+        if (iter==0){
+          val time1 = System.currentTimeMillis()
+          println(s"Executed in ${(time1-time0)/1000.0} seconds")
+          //after the last iteration print the top 10 eigenvector centrality values and the attributes of some edges
+          rankGraph.vertices.sortBy(-_._2).take(10).foreach(v => println(v))
+          rankGraph.edges.take(10).foreach{println(_)}
       }
-    }
+    }while (convergence > 0.00015 && iter!=0)
   }
 }
