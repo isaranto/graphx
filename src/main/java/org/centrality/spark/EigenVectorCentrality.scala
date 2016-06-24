@@ -5,7 +5,7 @@ import org.apache.spark.graphx.{Graph,GraphLoader, VertexRDD}
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
-  * Created by Ilias Sarantopoulos on 5/4/16.
+  * Created by Ilias Sarantopoulos on 6/18/16.
   */
 object EigenVectorCentrality {
   def main(args: Array[String]) {
@@ -48,7 +48,7 @@ object EigenVectorCentrality {
                 (a, b) => (a + b) // Reduce Function
         )
         rankGraph = rankGraph.outerJoinVertices(newVertices){ (vid, oldvalue, newvalue) => newvalue.getOrElse(0) }
-        iter = iter - 1
+        iter -= 1
         //calculate convergence as the sum of absolute differences of old and new eigenvalue of each vertex
         convergence = oldGraph
             .outerJoinVertices(rankGraph.vertices){(vid, oldvalue, newvalue)=> math.abs(newvalue.get-oldvalue)}
