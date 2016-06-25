@@ -21,7 +21,30 @@
         </dependency>
     </dependencies>
 
+    <pluginRepositories>
+    <pluginRepository>
+        <id>scala-tools.org</id>
+        <name>Scala-tools Maven2 Repository</name>
+        <url>http://scala-tools.org/repo-releases</url>
+      </pluginRepository>
+    </pluginRepositories>
 
+    <build>
+    <plugins>
+    <plugin>
+      <groupId>org.scala-tools</groupId>
+          <artifactId>maven-scala-plugin</artifactId>
+          <executions>
+            <execution>
+              <goals>
+                <goal>compile</goal>
+                <goal>testCompile</goal>
+              </goals>
+            </execution>
+          </executions>
+    </plugin>
+    </plugins>
+    </build>
 
 
 </project>

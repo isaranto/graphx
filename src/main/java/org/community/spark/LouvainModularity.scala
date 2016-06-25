@@ -71,7 +71,6 @@ object LouvainModularity{
       newVertices.collect.foreach(println)
       graph = Graph(newVertices, sc.parallelize(edgesNew))
       //TODO save community structure in the original graph object
-
       iter -= 1
       }while(iter != 0)
       //print time elapsed
