@@ -12,11 +12,12 @@ object DegreeCentrality {
 
   def main(args: Array[String]) {
     val time0 = System.currentTimeMillis()
-    System.setProperty("hadoop.home.dir", "/home/lias/IdeaProjects/centrality/")
-    val conf = new SparkConf().setAppName("Simple Application").setMaster("local")
+    //System.setProperty("hadoop.home.dir", "/home/lias/IdeaProjects/centrality/")
+    //hdfs://sparkmaster:7077/user/ilias/twitter_edges.txt
+    val conf = new SparkConf().setAppName("Degree")
     val sc = new SparkContext(conf)
     //val distFile = sc.textFile(edgesFile())
-    val graph = GraphLoader.edgeListFile(sc, "twitter_edges.txt")
+    val graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:7077/user/ilias/graphx/followers-new.txt")
     //val graph = GraphLoader.edgeListFile(sc, "followers.txt")
     /*var degrees:Map[Long,Int] = Map()
     for (triplet <- graph.triplets.collect) {
