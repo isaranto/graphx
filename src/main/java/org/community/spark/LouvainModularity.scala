@@ -11,19 +11,20 @@ object LouvainModularity{
   def main(args: Array[String]) {
     val time0 = System.currentTimeMillis()
     //System.setProperty("hadoop.home.dir", "/home/lias/IdeaProjects/centrality/")
-    val conf = new SparkConf().setAppName("Louvain")
+    val conf = new SparkConf().setAppName("Louvain").setMaster("local")
     val sc = new SparkContext(conf)
     val rootLogger = Logger.getRootLogger()
     rootLogger.setLevel(Level.ERROR)
     //var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/followers-new.txt")
-    var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/twitter_edges.txt")
+    //var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/twitter_edges.txt")
+    var graph = GraphLoader.edgeListFile(sc, "followers-new.txt").persist()
     var originalGraph = graph.mapVertices((id, attr) => Array(id.toInt))
     graph.collectNeighborIds(EdgeDirection.In).filter(x => x._1 == 3).foreach(x => println(s"vertex with id ${x._1} " +
       s"has " +
       s"neighbours ${x._2.deep.toString()}"))
     //initial.vertices.collect.foreach(println)
     // m is the m from the dQ function of modularity(total number of edges)
-    var iter = 4
+    var iter = 100
     do {
       //initialization: assign each vertice in its own community
       var initial = graph.mapVertices((id, attr) => id.toInt)
@@ -77,8 +78,7 @@ object LouvainModularity{
       //print time elapsed
       val time1 = System.currentTimeMillis()
       println(s"Executed in ${(time1 - time0) / 1000.0} seconds")
-      graph.edges.collect.foreach(println)
-
+      //graph.edges.collect.foreach(println)
 
     }
 
