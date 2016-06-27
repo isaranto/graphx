@@ -10,30 +10,33 @@ import org.apache.log4j.{Level, Logger}
   */
 object PageRank {
   def main(args: Array[String]) {
+    val time0 = System.currentTimeMillis()
     System.setProperty("hadoop.home.dir", "/home/lias/IdeaProjects/centrality/")
     val conf = new SparkConf().setAppName("informationRetrieval2016").setMaster("local")
     val sc = new SparkContext(conf)
     val rootLogger = Logger.getRootLogger()
     rootLogger.setLevel(Level.ERROR)
     // Load the edges as a graph
-    val graph = GraphLoader.edgeListFile(sc, "my_twitter_edges.txt")
+    //val graph = GraphLoader.edgeListFile(sc, "my_twitter_edges.txt")
+    val graph = GraphLoader.edgeListFile(sc, "twitter_edges.txt")
     // Run PageRank on my twitter network
-    val ranks = graph.pageRank(0.0001).vertices
+    val ranks = graph.staticPageRank(100)vertices
     // Join the ranks with the usernames
-    val users = sc.textFile("my_twitter_users.txt").map { line =>  val
+    /*val users = sc.textFile("my_twitter_users.txt").map { line =>  val
     fields = line
       .split(",")
       (fields(0).toLong, fields(1))
     }
     val ranksByUsername = users.join(ranks).map {
       case (id, (username, rank)) => (username, rank)
-    }
-    val sorted = ranksByUsername.sortBy(- _._2)
+    }*/
+    val sorted = ranks.sortBy(- _._2)
     //print top 10 vertices
     for ((vertexId, degree) <- sorted.take(10)){
       println(s"User: ${vertexId} has a pagerank degree of ${degree}")
     }
-
+    val time1 = System.currentTimeMillis()
+    println(s"Executed in ${(time1-time0)/1000.0} seconds")
  }
 
 
