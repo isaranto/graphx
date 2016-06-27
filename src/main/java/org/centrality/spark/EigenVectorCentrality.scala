@@ -15,11 +15,12 @@ object EigenVectorCentrality {
     val rootLogger = Logger.getRootLogger()
     rootLogger.setLevel(Level.ERROR)
     //var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/followers-new.txt")
-    var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/twitter_edges.txt")
+    //var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/twitter_edges.txt")
+    var graph = GraphLoader.edgeListFile(sc, "twitter_edges.txt")
     val nodeNumber = graph.numVertices
     val previousValue = graph.mapVertices((vId, eigenvalue) => 1.0 / nodeNumber)
     val zeroValue = graph.mapVertices((vId, eigenvalue) => 0.0)
-    var iter = 1000
+    var iter = 100
     var oldValue = previousValue
     var absolute = oldValue
     var newVertices = previousValue.vertices
@@ -54,7 +55,7 @@ object EigenVectorCentrality {
             .outerJoinVertices(rankGraph.vertices){(vid, oldvalue, newvalue)=> math.abs(newvalue.get-oldvalue)}
           .vertices.map(x => x._2).sum()
         oldGraph = rankGraph
-        println(s"Convergence is at ${convergence}")
+        println(s"Iteration # ${100-iter}, Convergence is at ${convergence}")
         if (iter==0){
           val time1 = System.currentTimeMillis()
           println(s"Executed in ${(time1-time0)/1000.0} seconds")

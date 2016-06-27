@@ -39,7 +39,7 @@ object DegreeCentrality {
       case (id, (username, score)) => (username, score)
     }*/
     //val sorted = ranksByUsername.sortBy(- _._2)
-    val sorted = degrees.sortBy(-_._2)
+    val sorted = normalized.sortBy(-_._2)
     //print time elapsed
     val time1 = System.currentTimeMillis()
     println(s"Executed in ${(time1-time0)/1000.0} seconds")
