@@ -17,7 +17,7 @@ object ClosenessCentrality {
     val rootLogger = Logger.getRootLogger()
     rootLogger.setLevel(Level.ERROR)
     //var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/followers-new.txt")
-    var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/twitter_edges.txt")
+    var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/twitter_edges_reduced.txt")
     //create a new RDD with just VertexId to be used for shortest paths
     // algorithm
     val vertexSeq = graph.vertices.map(v => v._1).collect().toSeq
