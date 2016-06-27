@@ -10,12 +10,12 @@ import org.apache.spark.{SparkConf, SparkContext}
 object EigenVectorCentrality {
   def main(args: Array[String]) {
     val time0 = System.currentTimeMillis()
-    System.setProperty("hadoop.home.dir", "/home/lias/IdeaProjects/centrality/")
-    val conf = new SparkConf().setAppName("Simple Application").setMaster("local")
+    val conf = new SparkConf().setAppName("EigenVector")
     val sc = new SparkContext(conf)
     val rootLogger = Logger.getRootLogger()
     rootLogger.setLevel(Level.ERROR)
-    val graph = GraphLoader.edgeListFile(sc, "followers-new.txt")
+    var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/followers-new.txt")
+    //var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/twitter-edges.txt")
     val nodeNumber = graph.numVertices
     val previousValue = graph.mapVertices((vId, eigenvalue) => 1.0 / nodeNumber)
     val zeroValue = graph.mapVertices((vId, eigenvalue) => 0.0)

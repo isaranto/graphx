@@ -11,13 +11,13 @@ import org.apache.log4j.{Level, Logger}
 object ClosenessCentrality {
   def main(args: Array[String]) {
     val time0 = System.currentTimeMillis()
-    System.setProperty("hadoop.home.dir", "/home/lias/IdeaProjects/centrality/")
-    val conf = new SparkConf().setAppName("Simple Application").setMaster("local")
+    //System.setProperty("hadoop.home.dir", "/home/lias/IdeaProjects/centrality/")
+    val conf = new SparkConf().setAppName("Closeness")
     val sc = new SparkContext(conf)
     val rootLogger = Logger.getRootLogger()
     rootLogger.setLevel(Level.ERROR)
-    //val graph = GraphLoader.edgeListFile(sc, "twitter_edges.txt")
-    val graph = GraphLoader.edgeListFile(sc, "followers.txt")
+    var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/followers-new.txt")
+    //var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/twitter-edges.txt")
     //create a new RDD with just VertexId to be used for shortest paths
     // algorithm
     val vertexSeq = graph.vertices.map(v => v._1).collect().toSeq
