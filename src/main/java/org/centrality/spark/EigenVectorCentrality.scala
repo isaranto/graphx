@@ -15,7 +15,7 @@ object EigenVectorCentrality {
     val rootLogger = Logger.getRootLogger()
     rootLogger.setLevel(Level.ERROR)
     //var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/followers-new.txt")
-    var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/twitter-edges.txt")
+    var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/twitter_edges.txt")
     val nodeNumber = graph.numVertices
     val previousValue = graph.mapVertices((vId, eigenvalue) => 1.0 / nodeNumber)
     val zeroValue = graph.mapVertices((vId, eigenvalue) => 0.0)
