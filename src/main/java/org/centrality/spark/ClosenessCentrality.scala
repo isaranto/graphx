@@ -16,8 +16,8 @@ object ClosenessCentrality {
     val sc = new SparkContext(conf)
     val rootLogger = Logger.getRootLogger()
     rootLogger.setLevel(Level.ERROR)
-    var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/followers-new.txt")
-    //var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/twitter-edges.txt")
+    //var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/followers-new.txt")
+    var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/twitter-edges.txt")
     //create a new RDD with just VertexId to be used for shortest paths
     // algorithm
     val vertexSeq = graph.vertices.map(v => v._1).collect().toSeq

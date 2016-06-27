@@ -15,8 +15,8 @@ object LouvainModularity{
     val sc = new SparkContext(conf)
     val rootLogger = Logger.getRootLogger()
     rootLogger.setLevel(Level.ERROR)
-    var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/followers-new.txt")
-    //var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/twitter-edges.txt")
+    //var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/followers-new.txt")
+    var graph = GraphLoader.edgeListFile(sc, "hdfs://sparkmaster:9000/user/ilias/twitter-edges.txt")
     var originalGraph = graph.mapVertices((id, attr) => Array(id.toInt))
     graph.collectNeighborIds(EdgeDirection.In).filter(x => x._1 == 3).foreach(x => println(s"vertex with id ${x._1} " +
       s"has " +
